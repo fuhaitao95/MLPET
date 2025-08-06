@@ -1,7 +1,7 @@
 
 # MLPET: A Multi-Level Prompt-Enhanced Transformer for Unified Molecular Property and Drug-Drug Interaction event Prediction
 
-## Abstract
+## 1 Abstract
 
 Accurate prediction of molecular properties and drug–drug interaction (DDI) events is crucial for drug discovery and pharmacological safety assessment. 
 However, existing approaches typically focus on single-level molecular representation and lack generalizable strategies for multi-task knowledge transfer. 
@@ -16,37 +16,37 @@ Extensive experiments on MoleculeNet, Ryu, and Deng benchmarks demonstrate that 
 Our results highlight the potential of promptguided multi-task pretraining as a generalizable paradigm for molecular representation learning. 
 
 
-## 简介
+## 2 Introduction
 
-本项目实现了一个基于 Prompt 的 SMILES 表达式学习框架，支持多任务联合预训练以及在多种下游任务上的迁移评估，包括：
+This project implements a prompt-based learning framework for SMILES sequences, enabling multi-task joint pretraining and transfer evaluation on various downstream tasks, including:
 
-- 分子三维距离回归（3D Distance Prediction）
-- 原子掩码预测（Atom Mask Prediction）
-- 边连接预测（Edge Link Prediction）
-- 药物-药物相互作用分类（DDI Classification）
-- 分子性质预测（Molecular Property Prediction）
+- Distance Prediction
+- Atom Prediction Prediction
+- Bond Prediction
+- DDI Classification
+- Molecular Property Prediction
 
 ---
 
-## 项目结构
+## 3 Project Structure
 
 ```text
 .
-├── main_pretrain.py       # 预训练：三任务联合训练
-├── main_DDI.py            # 多分类 DDI 预测任务
-├── main_MPP.py            # 分子性质预测任务（OGB数据集）
-├── Prompt_model/          # 编码器、Prompt模块、各类预测器
-├── dataset/               # DeepDDI / DrugBank / OGB 数据集加载器
-├── pretrain_dataset/      # QM9SMILES 数据集加载器
-├── Utils/                 # 工具函数（日志、评估、特征转换等）
-└── save/                  # 训练保存路径
+├── main_pretrain.py       # Multi-task joint pretraining
+├── main_DDI.py            # DDI classification task
+├── main_MPP.py            # Molecular property prediction (OGB datasets)
+├── Prompt_model/          # Encoders, prompt modules, predictors
+├── dataset/               # Loaders for DeepDDI / DrugBank / OGB
+├── pretrain_dataset/      # QM9SMILES dataset loader
+├── Utils/                 # Utilities (logging, evaluation, feature conversion)
+└── save/                  # Directory for saved models and logs
 ```
 
 ---
 
-## 快速开始
+## 4 Quick Start
 
-### 1. 安装环境
+### 4.1 Environment Setup
 
 ```bash
 conda create -n mol-prompt python=3.10 -y
@@ -56,9 +56,9 @@ pip install -r requirements.txt
 
 ---
 
-### 2. 运行模型
+### 4.2 Run Models
 
-#### 预训练
+#### 4.2.1 Pretraining
 
 ```bash
 python main_pretrain.py \
@@ -70,7 +70,7 @@ python main_pretrain.py \
   --model_save_path save/Molecule/model.pth
 ```
 
-输出模型包括：
+Output：
 
 * `model.pth`
 * `learnable_prompt.pth`
@@ -79,7 +79,7 @@ python main_pretrain.py \
 
 ---
 
-#### 药物-药物相互作用预测（DDI）
+#### 4.2.2 DDI Event Prediction
 
 ```bash
 python main_DDI.py \
@@ -91,11 +91,11 @@ python main_DDI.py \
   --model_save_path save_ds/DDI/model_ds_ddi.pth
 ```
 
-可选数据集：`Ryu` 或 `Deng`
+Optional datasets: `Ryu` or `Deng`
 
 ---
 
-#### 分子属性预测（MPP）
+#### 4.2.3 Molecular Property Prediction
 
 ```bash
 python main_MPP.py \
@@ -107,7 +107,7 @@ python main_MPP.py \
   --model_save_path save_ds/MPP/model_ds_mpp.pth
 ```
 
-可选数据集包括：
+Optional datasets: 
 
 * ogbg-moltox21
 * ogbg-molbace
@@ -120,24 +120,24 @@ python main_MPP.py \
 
 ---
 
-## 评估指标
+## 5 Evaluation Metrics
 
-各任务支持的评估指标：
 
-| 任务类型      | 评估指标                          |
+
+| Task      | Metrics                          |
 |-----------| ----------------------------- |
-| 原子预测      | F1 Score                      |
-| 边预测       | ROC-AUC                       |
-| 分子距离回归    | RMSE                          |
-| DDI 多分类预测 | F1, Accuracy, Precision, AUPR |
-| MPP性质预测   | 分类任务（AUC） / 回归任务（RMSE）        |
+| Atom Prediction      | F1 Score                      |
+| Bond Prediction       | ROC-AUC                       |
+| Distance Regression    | RMSE                          |
+| DDI Classification | F1, Accuracy, Precision, AUPR |
+| MPP   | AUC (classification) / RMSE (regression)        |
 
 ---
 
-## 🧠 模型结构说明
+## 6 Model Components
 
-* **Prompt\_SMILES**：主编码器，结合 SMILES 字符序列与位置嵌入
-* **LearnablePrompt**：任务可学习提示向量（支持多个任务）
+* **Prompt\_SMILES**: Main encoder combining SMILES sequences with positional embeddings
+* **LearnablePrompt**: LearnablePrompt: Trainable task-specific prompt vectors
 * **Predictors**：
 
   * `Atom_Predictor`、`Edge_Predictor`、`TDDistance_Predictor`
