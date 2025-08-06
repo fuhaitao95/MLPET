@@ -30,6 +30,7 @@ Our results highlight the potential of promptguided multi-task pretraining as a 
 
 ## 项目结构
 
+```text
 .
 ├── main_pretrain.py       # 预训练：三任务联合训练
 ├── main_DDI.py            # 多分类 DDI 预测任务
@@ -39,6 +40,7 @@ Our results highlight the potential of promptguided multi-task pretraining as a 
 ├── pretrain_dataset/      # QM9SMILES 数据集加载器
 ├── Utils/                 # 工具函数（日志、评估、特征转换等）
 └── save/                  # 训练保存路径
+```
 
 ---
 
